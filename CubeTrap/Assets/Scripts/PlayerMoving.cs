@@ -37,6 +37,17 @@ public class PlayerMoving : MonoBehaviour
         {
             Die();
         }
+
+        if (transform.position.x < -15.92 || transform.position.x > 15.10 || transform.position.z < -2.84 || transform.position.z > 13.70)
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+        else
+        {
+            gameObject.GetComponent<Rigidbody>().position = new Vector3(transform.position.x, 0.35f, transform.position.z);
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+        }
+            
+      
+
     }
 
     private void OnCollisionEnter(Collision other)
