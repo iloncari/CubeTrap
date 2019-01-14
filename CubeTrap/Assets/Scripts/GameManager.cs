@@ -25,10 +25,16 @@ public class GameManager : MonoBehaviour
     private int totalTokenCount;
     private int tokensLeft;
     private bool showWinScreen, showGameWinScreen;
+    private AudioSource audio;
+    private bool clokIsTicking = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
+
+        audio.clip = Resources.Load<AudioClip>("Sounds/level_music");
+        audio.Play();
         GameObject backBtn = GameObject.Instantiate(backButton, new Vector3(70f, -60f + Screen.height, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
         Button bB = GameObject.FindGameObjectWithTag("BB").GetComponent<Button>();
         bB.onClick.AddListener(ReturnToMainMenu);
@@ -68,11 +74,20 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(0);
             }
         }
+
+        if(startTime < 5.5f && !clokIsTicking)
+        {
+            clokIsTicking = true;
+            audio.Stop();
+            audio.clip = Resources.Load<AudioClip>("Sounds/clock");
+            audio.Play();
+        }
        
     }
     public void CompleteLevel()
     {
         showWinScreen = true;
+        audio.Stop();
         
         
     }
@@ -108,8 +123,9 @@ public class GameManager : MonoBehaviour
     private void OnGUI()
     {
         GUI.skin = skin;
-        if(startTime < 5f){
+        if(startTime <= 5f){
             skin.GetStyle("Timer").normal.textColor = warningColorTimer;
+            
         }
         else{
             skin.GetStyle("Timer").normal.textColor = defaultColorTimer;
@@ -140,7 +156,7 @@ public class GameManager : MonoBehaviour
         }
         if (showGameWinScreen && !showWinScreen)
         {
-            Rect winScreenRect = new Rect(Screen.width / 2 - (Screen.width * 0.5f / 2), Screen.height / 2 - (Screen.height * 0.35f / 2), Screen.width * 0.5f, Screen.height * 0.35f);
+            Rect winScreenRect = new Rect(Screen.width / 2 - (Screen.width * 0.5f / 2), Screen.height / 2 - (Screen.height * 0.25f / 2), Screen.width * 0.5f, Screen.height * 0.25f);
             GUI.Box(winScreenRect, "Congratulations!\nGame is Complete!", skin.GetStyle("box"));
             if (GUI.Button(new Rect(winScreenRect.x + (winScreenRect.width/2) - 105, winScreenRect.y + winScreenRect.height - 80, 210, 60), "Main Menu"))
             {

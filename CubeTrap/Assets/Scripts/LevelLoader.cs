@@ -12,10 +12,19 @@ public class LevelLoader : MonoBehaviour
     private string loadPrompt;
     private bool inRange, canLoadLevel;
     private int completedLevel;
+    private AudioSource audio;
+    public bool usingAudio = false;
     
 
     private void Start()
     {
+        if (usingAudio)
+        {
+            audio = GetComponent<AudioSource>();
+            audio.clip = Resources.Load<AudioClip>("Sounds/menu_music");
+            audio.Play();
+        }
+        
         completedLevel = PlayerPrefs.GetInt("Level Completed");
         canLoadLevel = levelToLoad <= completedLevel ? true : false;
         if (!canLoadLevel)
