@@ -19,6 +19,7 @@ public class PlayerMoving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1f;
         spawn = transform.position;
         if(usesManager)
             manager = manager.GetComponent<GameManager>();
